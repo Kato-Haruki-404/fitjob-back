@@ -1,0 +1,16 @@
+services:
+  api:
+    build: ./laravel-app
+    volumes:
+      - .:/workdir
+    ports:
+      - 8000:8000
+  db:
+    image: mysql:8.3
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: dev
+    ports:
+      - 3306:3306
