@@ -15,3 +15,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('logout', [AuthController::class, 'logout']);
     });
 });
+
+Route::middleware(['auth:sanctum', 'is_admin'])->group(function () {
+    
+});
+
+Route::middleware(['auth:sanctum', 'is_company'])->group(function () {
+    
+});
