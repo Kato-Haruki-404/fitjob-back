@@ -12,6 +12,7 @@ class Recruitment extends Model
         'thumbnail_id',
         'title',
         'work_content',
+        'work_type',
         'atmosphere_description',
         'welfare_description',
         'appeal_points',

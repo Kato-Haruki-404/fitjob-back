@@ -18,10 +18,11 @@ return new class extends Migration
             $table->foreignId('thumbnail_id')->constrained('file_paths')->cascadeOnDelete(); //サムネイル画像
             $table->string('title'); // 募集タイトル
             $table->text('work_content'); // 仕事内容
+            $table->enum('work_type', ['短期','単発']); // 募集期間
             $table->text('atmosphere_description'); // 職場の雰囲気
             $table->text('welfare_description'); // 福利厚生
             $table->text('appeal_points'); // アピールポイント
-            $table->enum('employment_type', ['短期','単発']); // 雇用形態
+            $table->enum('employment_type', ['アルバイト','パート']); // 雇用形態
             $table->text('ideal_candidate'); // 求める人物像
             $table->text('precautions'); // 注意事項
             $table->integer('break_time_minutes')->comment('分単位'); // 休憩時間
