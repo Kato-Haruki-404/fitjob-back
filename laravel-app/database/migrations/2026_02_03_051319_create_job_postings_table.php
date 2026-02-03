@@ -18,8 +18,9 @@ return new class extends Migration
             $table->string('company_name'); //会社名
             $table->string('email'); //メールアドレス
             $table->string('tel'); //電 話番号
-            $table->integer('salary'); //給与
-            $table->integer('wage'); //時給
+            $table->enum('salary_type', ['時給', '日給']); //給与形態
+            $table->integer('wage'); //時給単価
+            $table->enum('employment_type', ['パートタイム', 'アルバイト']); //雇用形態
             $table->string('external_link_url'); //外部リンクURL
             $table->string('image'); //画像
             $table->boolean('is_published')->default(false); //公開フラグ
