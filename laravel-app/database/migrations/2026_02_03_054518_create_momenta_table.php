@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('publish_periods', function (Blueprint $table) {
+        Schema::create('momenta', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('recruitment_id')->constrained('recruitments')->cascadeOnDelete();
-            $table->dateTime('start_date');
-            $table->dateTime('end_date');
+            $table->foreignId('job_posting_id')->unique()->constrained('job_postings')->onDelete('cascade');
+            $table->integer('calorie'); //カロリー
+            $table->integer('steps'); //歩数
+            $table->integer('exercise_level'); //運動レベル
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('publish_periods');
+        Schema::dropIfExists('momenta');
     }
 };
