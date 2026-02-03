@@ -10,8 +10,8 @@ class Tag extends Model
         'name',
     ];
 
-    public function recruitments()
+    public function jobPostings()
     {
-        return $this->belongsToMany(Recruitment::class, 'recruitment_tags');
+        return $this->belongsToMany(JobPosting::class, 'job_posting_tag');
     }
 }

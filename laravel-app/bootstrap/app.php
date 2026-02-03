@@ -5,9 +5,6 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
-use App\Http\Middleware\Authenticate;
-use App\Http\Middleware\IsAdmin;
-use App\Http\Middleware\IsCompany;
 use App\Http\Middleware\CamelCaseResponse;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -19,11 +16,6 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->statefulApi();
-        $middleware->alias([
-            'auth' => Authenticate::class,
-            'is_admin' => IsAdmin::class,
-            'is_company' => IsCompany::class,
-        ]);
         // APIルート全体にCamelCaseResponseを適用
         $middleware->api(append: [
             CamelCaseResponse::class,

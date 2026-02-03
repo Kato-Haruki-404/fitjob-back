@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('file_paths', function (Blueprint $table) {
-            $table->id();
-            $table->string('path');
-            $table->string('extension');
-            $table->timestamps();
+        Schema::create('job_posting_tag', function (Blueprint $table) {
+            $table->foreignId('job_posting_id')->constrained()->onDelete('cascade');
+            $table->foreignId('tag_id')->constrained()->onDelete('cascade');
+            $table->primary(['job_posting_id', 'tag_id']);
         });
     }
 
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('file_paths');
+        Schema::dropIfExists('job_posting_tag');
     }
 };
