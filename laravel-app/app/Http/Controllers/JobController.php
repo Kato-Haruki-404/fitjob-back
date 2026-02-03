@@ -13,7 +13,7 @@ class JobController extends Controller
      * Sortable columns mapping
      */
     private const SORT_OPTIONS = [
-        'salary_desc' => ['column' => 'salary', 'direction' => 'desc'],
+
         'wage_desc' => ['column' => 'wage', 'direction' => 'desc'],
         'latest' => ['column' => 'created_at', 'direction' => 'desc'],
     ];
@@ -54,12 +54,7 @@ class JobController extends Controller
         if ($request->filled('max_wage')) {
             $query->where('wage', '<=', $request->input('max_wage'));
         }
-        if ($request->filled('min_salary')) {
-            $query->where('salary', '>=', $request->input('min_salary'));
-        }
-        if ($request->filled('max_salary')) {
-            $query->where('salary', '<=', $request->input('max_salary'));
-        }
+
 
         // Momentum Filters
         if ($request->anyFilled(['min_calorie', 'max_calorie', 'min_steps', 'max_steps', 'exercise_levels'])) {
@@ -115,8 +110,9 @@ class JobController extends Controller
             'company_name' => $validated['companyName'],
             'email' => $validated['email'],
             'tel' => $validated['tel'],
-            'salary' => $validated['salary'],
+            'salary_type' => $validated['salaryType'],
             'wage' => $validated['wage'],
+            'employment_type' => $validated['employmentType'],
             'external_link_url' => $validated['externalLinkUrl'],
             'image' => $imagePath,
             'address_id' => $addressId,

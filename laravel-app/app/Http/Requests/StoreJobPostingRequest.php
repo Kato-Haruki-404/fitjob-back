@@ -28,12 +28,14 @@ class StoreJobPostingRequest extends FormRequest
             'companyName' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255'],
             'tel' => ['required', 'string', 'max:20'],
-            'salary' => ['required', 'integer'],
+            'salaryType' => ['required', 'string', 'in:時給,日給'],
             'wage' => ['required', 'integer'],
+            'employmentType' => ['required', 'string', 'in:パートタイム,アルバイト'],
             'externalLinkUrl' => ['required', 'url'],
             'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:10240'],
             'postalCode' => ['nullable', 'string', 'max:10'],
             'access' => ['nullable', 'string', 'max:500'],
+            
         ];
     }
 
@@ -52,10 +54,14 @@ class StoreJobPostingRequest extends FormRequest
             'tel.required' => '電話番号は必須です。',
             'tel.string' => '電話番号は文字列で入力してください。',
             'tel.max' => '電話番号は20文字以下で入力してください。',
-            'salary.required' => '給与は必須です。',
-            'salary.integer' => '給与は整数で入力してください。',
+            'salaryType.required' => '給与形態は必須です。',
+            'salaryType.string' => '給与形態は文字列で入力してください。',
+            'salaryType.in' => '給与形態は「時給」または「日給」で入力してください。',
             'wage.required' => '時給は必須です。',
             'wage.integer' => '時給は整数で入力してください。',
+            'employmentType.required' => '雇用形態は必須です。',
+            'employmentType.string' => '雇用形態は文字列で入力してください。',
+            'employmentType.in' => '雇用形態は「パートタイム」または「アルバイト」で入力してください。',
             'externalLinkUrl.required' => '外部リンクURLは必須です。',
             'externalLinkUrl.url' => '外部リンクURLの形式が正しくありません。',
             'image.required' => '画像は必須です。',
