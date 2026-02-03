@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('job_postings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('address_id')->unique()->constrained('addresses')->onDelete('cascade');
+            $table->foreignId('address_id')->unique()->nullable()->constrained('addresses')->onDelete('cascade');
             $table->string('title'); //求人タイトル
             $table->string('company_name'); //会社名
             $table->string('email'); //メールアドレス
@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('salary'); //給与
             $table->integer('wage'); //時給
             $table->string('external_link_url'); //外部リンクURL
+            $table->string('image'); //画像
             $table->boolean('is_published')->default(false); //公開フラグ
             $table->timestamps();
         });
