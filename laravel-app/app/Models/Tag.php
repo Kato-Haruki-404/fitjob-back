@@ -10,6 +10,12 @@ class Tag extends Model
         'name',
     ];
 
+    protected $hidden = [
+        'pivot',
+        'created_at',
+        'updated_at',
+    ];
+
     public function jobPostings()
     {
         return $this->belongsToMany(JobPosting::class, 'job_posting_tag');
