@@ -11,6 +11,8 @@ class UserProfile extends Model
         'account_id',
         'address_id',
         'identity_document_id',
+        'resume_file_id',
+        'biography',
         'tel',
         'last_name',
         'last_name_kana',
@@ -53,5 +55,10 @@ class UserProfile extends Model
     public function identityDocument()
     {
         return $this->belongsTo(FilePath::class, 'identity_document_id');
+    }
+
+    public function resumeFile()
+    {
+        return $this->belongsTo(FilePath::class, 'resume_file_id');
     }
 }

@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('user_profiles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('account_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('address_id')->constrained('addresses')->cascadeOnDelete();
-            $table->foreignId('identity_document_id')->constrained('file_paths')->cascadeOnDelete();
+            $table->foreignId('account_id')->unique()->constrained('users')->cascadeOnDelete();
+            $table->foreignId('address_id')->unique()->constrained('addresses')->cascadeOnDelete();
+            $table->foreignId('identity_document_id')->unique()->constrained('file_paths')->cascadeOnDelete();
+            $table->foreignId('resume_file_id')->unique()->constrained('file_paths')->cascadeOnDelete();
             $table->string('tel');
             $table->string('last_name');
             $table->string('last_name_kana');
@@ -23,6 +24,7 @@ return new class extends Migration
             $table->string('first_name_kana');
             $table->date('birthday');
             $table->string('gender');
+            $table->text('biography');
             $table->timestamps();
         });
     }
