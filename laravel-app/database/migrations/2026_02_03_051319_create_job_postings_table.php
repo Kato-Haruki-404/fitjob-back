@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('job_postings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('address_id')->unique()->nullable()->constrained('addresses')->onDelete('cascade');
+            $table->foreignId('address_id')->unique()->constrained('addresses')->onDelete('cascade');
             $table->string('title'); //求人タイトル
             $table->string('company_name'); //会社名
             $table->string('email'); //メールアドレス
