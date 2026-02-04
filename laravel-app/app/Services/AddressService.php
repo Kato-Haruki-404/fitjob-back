@@ -156,8 +156,8 @@ class AddressService
      * 住所文字列から直接Addressを作成（外部API使用）
      */
     public static function createFromFullAddress(
-        string $postalCode,
-        string $fullAddress
+        string $fullAddress,
+        ?string $postalCode = null
     ): Address {
         $parsed = self::parse($fullAddress);
         
@@ -186,7 +186,7 @@ class AddressService
      * 住所情報からAddressレコードを作成（外部API使用）
      */
     public static function create(
-        string $postalCode,
+        ?string $postalCode,
         string $prefecture,
         string $addressLine,
         string $city = '',

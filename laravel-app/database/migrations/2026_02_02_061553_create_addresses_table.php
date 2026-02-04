@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->string('postal_code'); // 郵便番号
+            $table->string('postal_code')->nullable(); // 郵便番号
             $table->string('prefecture'); // 都道府県
             $table->string('city'); // 市区町村
             $table->string('town'); // 町域

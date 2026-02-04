@@ -33,8 +33,7 @@ class StoreJobPostingRequest extends FormRequest
             'employmentType' => ['required', 'string', 'in:パートタイム,アルバイト'],
             'externalLinkUrl' => ['required', 'url'],
             'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:10240'],
-            'postalCode' => ['nullable', 'string', 'max:10'],
-            'access' => ['nullable', 'string', 'max:500'],
+            'access' => ['required', 'string', 'max:500'],
             
         ];
     }
@@ -68,8 +67,6 @@ class StoreJobPostingRequest extends FormRequest
             'image.image' => '画像は画像ファイルでアップロードしてください。',
             'image.mimes' => '画像はjpeg,png,jpg,gif形式でアップロードしてください。',
             'image.max' => '画像は10MB以下でアップロードしてください。',
-            'postalCode.string' => '郵便番号は文字列で入力してください。',
-            'postalCode.max' => '郵便番号は10文字以下で入力してください。',
             'access.string' => '住所は文字列で入力してください。',
             'access.max' => '住所は500文字以下で入力してください。',
         ];

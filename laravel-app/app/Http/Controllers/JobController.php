@@ -100,8 +100,7 @@ class JobController extends Controller
         // 住所情報がある場合はAddressを作成
         $addressId = null;
         if (!empty($validated['access'])) {
-            $postalCode = $validated['postalCode'] ?? '';
-            $address = AddressService::createFromFullAddress($postalCode, $validated['access']);
+            $address = AddressService::createFromFullAddress($validated['access']);
             $addressId = $address->id;
         }
 
