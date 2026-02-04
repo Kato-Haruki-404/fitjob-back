@@ -11,13 +11,20 @@ class AuthController extends Controller
 {
     public function signUp(AuthSignUpRequest $request)
     {
-        $user = User::create($request->validated());
-        $token = $user->createToken('auth_token')->plainTextToken;
+        if (User::count() === 0) {
+            $user = User::create($request->validated());
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+            return response()->json([
+                'success' => true,
+                'authToken' => $token,
+            ]);
+        }
 
         return response()->json([
-            'success' => true,
-            'authToken' => $token,
-        ]);
+            'success' => false,
+            'messages' => ['既にユーザーが登録されています。'],
+        ], 400);
     }
 
     public function login(AuthLoginRequest $request)
