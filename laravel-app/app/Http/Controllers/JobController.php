@@ -49,8 +49,9 @@ class JobController extends Controller
         }
         if ($request->filled('max_wage')) {
             $query->where('wage', '<=', $request->input('max_wage'));
+        if ($request->filled('salary_type')) {
+            $query->where('salary_type', $request->input('salary_type'));
         }
-
         if ($request->anyFilled(['min_calorie', 'max_calorie', 'min_steps', 'max_steps', 'exercise_levels'])) {
             $query->whereHas('momentum', function ($q) use ($request) {
                 if ($request->filled('min_calorie')) {
@@ -71,9 +72,58 @@ class JobController extends Controller
             });
         }
 
-        $sortKey = $request->input('sort', 'latest');
-        $sortConfig = self::SORT_OPTIONS[$sortKey] ?? self::SORT_OPTIONS['latest'];
-        $query->orderBy($sortConfig['column'], $sortConfig['direction']);
+        if ($request->filled('tags')) {
+            $tags = $request->input('tags');
+            $query->whereHas('tags', function ($q) use ($tags) {
+                $q->whereIn('name', $tags);
+            });
+        }
+
+
+        // デフォルトソート設定: 座標があれば距離順、なければ新着順
+        $defaultSort = $request->filled(['latitude', 'longitude']) ? ['distance', 'latest'] : ['latest'];
+        $sortInput = $request->input('sort', $defaultSort);
+        $sortParams = is_array($sortInput) ? $sortInput : explode(',', $sortInput);
+        $joinedMomenta = false;
+        $joinedAddresses = false;
+
+        foreach ($sortParams as $sortKey) {
+            $sortKey = trim($sortKey);
+
+            if (($sortKey === 'exercise' || $sortKey === 'exercise_desc' || $sortKey === 'exercise_asc' || $sortKey === 'calorie') && !$joinedMomenta) {
+                $query->join('momenta', 'job_postings.id', '=', 'momenta.job_posting_id');
+                
+                if ($sortKey === 'calorie') {
+                    $query->orderBy('momenta.calorie', 'desc');
+                } else {
+                    $query->orderBy('momenta.exercise_level', $sortKey === 'exercise_asc' ? 'asc' : 'desc');
+                }
+                $joinedMomenta = true;
+            } elseif ($sortKey === 'distance' && $request->filled(['latitude', 'longitude']) && !$joinedAddresses) {
+                $lat = $request->input('latitude');
+                $lng = $request->input('longitude');
+
+                $query->join('addresses', 'job_postings.address_id', '=', 'addresses.id')
+                    ->selectRaw('
+                        job_postings.*,
+                        ( 6371 * acos( cos( radians(?) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(?) ) + sin( radians(?) ) * sin( radians( latitude ) ) ) ) AS distance
+                    ', [$lat, $lng, $lat])
+                    ->orderBy('distance');
+                $joinedAddresses = true;
+            } else {
+                $sortConfig = self::SORT_OPTIONS[$sortKey] ?? null;
+                if ($sortConfig) {
+                    $query->orderBy($sortConfig['column'], $sortConfig['direction']);
+                }
+            }
+        }
+
+        // job_postingsテーブルのカラムを選択（既にselectRawなどで指定されていない場合）
+        if (!$joinedAddresses && !$joinedMomenta) {
+            // 特にJOINしていない場合はそのまま
+        } elseif ($joinedMomenta && !$joinedAddresses) {
+            $query->select('job_postings.*');
+        }
         $perPage = min($request->input('per_page', 20), 100); // Max 100 per page
         $jobs = $query->paginate($perPage);
 
