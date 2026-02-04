@@ -14,6 +14,7 @@ class Tag extends Model
         'pivot',
         'created_at',
         'updated_at',
+        'jobPostings',
     ];
 
     public function jobPostings()

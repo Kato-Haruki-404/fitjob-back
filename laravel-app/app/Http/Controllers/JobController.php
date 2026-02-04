@@ -49,6 +49,7 @@ class JobController extends Controller
         }
         if ($request->filled('max_wage')) {
             $query->where('wage', '<=', $request->input('max_wage'));
+        }
         if ($request->filled('salary_type')) {
             $query->where('salary_type', $request->input('salary_type'));
         }

@@ -16,6 +16,7 @@ class Momentum extends Model
     protected $hidden = [
         'id',
         'job_posting_id',
+        'jobPosting',
     ];
 
     public function jobPosting()
