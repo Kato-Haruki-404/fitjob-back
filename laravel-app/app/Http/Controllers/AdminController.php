@@ -22,7 +22,7 @@ class AdminController extends Controller
 
     public function updateJobStatus($id, UpdateJobStatusRequest $request)
     {
-        $job = JobPosting::find($id);
+        $job = JobPosting::findOrFail($id);
         $job->status = $request->status;
         $job->save();
 
@@ -33,8 +33,9 @@ class AdminController extends Controller
 
     public function updateJobMetadata($id, UpdateJobMetadataRequest $request)
     {
-        $job = JobPosting::find($id);
+        $job = JobPosting::findOrFail($id);
         $job->momentum()->updateOrCreate(
+            [],
             [
                 'calorie' => $request->calorie,
                 'steps' => $request->steps,
