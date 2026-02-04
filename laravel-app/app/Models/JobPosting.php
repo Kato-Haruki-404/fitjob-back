@@ -16,7 +16,7 @@ class JobPosting extends Model
         'wage',
         'employment_type',
         'external_link_url',
-        'is_published',
+        'status',
         'image',
         'address_id',
     ];
