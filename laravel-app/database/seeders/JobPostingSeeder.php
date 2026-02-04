@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\JobPosting;
 use App\Models\Tag;
 use App\Models\Momentum;
+use App\Models\Address;
 
 class JobPostingSeeder extends Seeder
 {
@@ -27,11 +28,11 @@ class JobPostingSeeder extends Seeder
                 'salary_type' => '時給',
                 'employment_type' => 'パートタイム',
                 'wage' => 3000,
-                'external_link_url' => 'https://example.com/job/1',
+                'external_link_url' => 'https://vantan.jp/',
                 'image' => 'images/job1.jpg',
                 'status' => 'approved',
                 'momentum' => ['calorie' => 300, 'steps' => 8000, 'exercise_level' => 3],
-                'tags' => ['エンジニア', '高時給'],
+                'tags' => ['歩く時間が多い', '立ちっぱなし', '全身'],
                 'created_at' => now()->subDays(5),
             ],
             [
@@ -42,11 +43,11 @@ class JobPostingSeeder extends Seeder
                 'salary_type' => '時給',
                 'employment_type' => 'アルバイト',
                 'wage' => 1200,
-                'external_link_url' => 'https://example.com/job/2',
+                'external_link_url' => 'https://vantan.jp/',
                 'image' => 'images/job2.jpg',
                 'status' => 'approved',
                 'momentum' => ['calorie' => 150, 'steps' => 3000, 'exercise_level' => 1],
-                'tags' => ['デザイナー', '未経験OK'],
+                'tags' => ['屋内作業', '上半身'],
                 'created_at' => now()->subDays(10),
             ],
             [
@@ -57,11 +58,11 @@ class JobPostingSeeder extends Seeder
                 'salary_type' => '時給',
                 'employment_type' => 'パートタイム',
                 'wage' => 2500,
-                'external_link_url' => 'https://example.com/job/3',
+                'external_link_url' => 'https://vantan.jp/',
                 'image' => 'images/job3.jpg',
                 'status' => 'approved',
                 'momentum' => ['calorie' => 250, 'steps' => 6000, 'exercise_level' => 2],
-                'tags' => ['エンジニア', 'リモートワーク'],
+                'tags' => ['繰り返し動作が多い', '体幹'],
                 'created_at' => now()->subDays(3),
             ],
             [
@@ -72,11 +73,11 @@ class JobPostingSeeder extends Seeder
                 'salary_type' => '日給',
                 'employment_type' => 'アルバイト',
                 'wage' => 2000,
-                'external_link_url' => 'https://example.com/job/4',
+                'external_link_url' => 'https://vantan.jp/',
                 'image' => 'images/job4.jpg',
                 'status' => 'approved',
                 'momentum' => ['calorie' => 180, 'steps' => 4000, 'exercise_level' => 2],
-                'tags' => ['デザイナー', '高時給'],
+                'tags' => ['屋外作業', '重いものを持つ'],
                 'created_at' => now()->subDays(1),
             ],
             [
@@ -87,11 +88,11 @@ class JobPostingSeeder extends Seeder
                 'salary_type' => '時給',
                 'employment_type' => 'パートタイム',
                 'wage' => 2800,
-                'external_link_url' => 'https://example.com/job/5',
+                'external_link_url' => 'https://vantan.jp/',
                 'image' => 'images/job5.jpg',
                 'status' => 'approved',
                 'momentum' => ['calorie' => 200, 'steps' => 5000, 'exercise_level' => 2],
-                'tags' => ['エンジニア', 'リモートワーク'],
+                'tags' => ['下半身', '歩く時間が多い'],
                 'created_at' => now(),
             ],
         ];
@@ -100,6 +101,20 @@ class JobPostingSeeder extends Seeder
             $momentumData = $data['momentum'];
             $tagNames = $data['tags'];
             unset($data['momentum'], $data['tags']);
+
+            $address = Address::create([
+                'prefecture' => '東京都',
+                'city' => '渋谷区',
+                'town' => '恵比寿南',
+                'address_line' => '1-2-3',
+                'building_name' => 'テストビル101',
+                'latitude' => 35.6467139,
+                'longitude' => 139.7101033,
+                'line_name' => 'JR山手線',
+                'nearest_station' => '恵比寿駅',
+                'walking_minutes' => 5,
+            ]);
+            $data['address_id'] = $address->id;
 
             $job = JobPosting::create($data);
 
