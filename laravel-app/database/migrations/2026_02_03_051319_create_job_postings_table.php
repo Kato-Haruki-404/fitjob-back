@@ -23,7 +23,7 @@ return new class extends Migration
             $table->enum('employment_type', ['パートタイム', 'アルバイト']); //雇用形態
             $table->string('external_link_url'); //外部リンクURL
             $table->string('image'); //画像
-            $table->boolean('is_published')->default(false); //公開フラグ
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending'); //公開フラグ
             $table->timestamps();
         });
     }

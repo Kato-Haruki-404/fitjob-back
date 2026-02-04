@@ -20,9 +20,8 @@ class JobController extends Controller
 
     public function index(Request $request)
     {
-        $query = JobPosting::with(['tags', 'momentum', 'address'])->where('is_published', 1);
+        $query = JobPosting::with(['tags', 'momentum', 'address'])->where('status', 'approved');
 
-        // Keyword Search (multiple keywords - AND logic between keywords, OR logic between columns)
         if ($request->filled('keyword')) {
             $keywords = $request->input('keyword');
             $query->where(function ($q) use ($keywords) {
@@ -42,12 +41,9 @@ class JobController extends Controller
             });
         }
 
-        // IDs
         if ($request->filled('jobIds')) {
             $query->whereIn('id', $request->input('jobIds'));
         }
-
-        // Wage / Salary Filters
         if ($request->filled('min_wage')) {
             $query->where('wage', '>=', $request->input('min_wage'));
         }
@@ -55,8 +51,6 @@ class JobController extends Controller
             $query->where('wage', '<=', $request->input('max_wage'));
         }
 
-
-        // Momentum Filters
         if ($request->anyFilled(['min_calorie', 'max_calorie', 'min_steps', 'max_steps', 'exercise_levels'])) {
             $query->whereHas('momentum', function ($q) use ($request) {
                 if ($request->filled('min_calorie')) {
@@ -77,12 +71,9 @@ class JobController extends Controller
             });
         }
 
-        // Sort
         $sortKey = $request->input('sort', 'latest');
         $sortConfig = self::SORT_OPTIONS[$sortKey] ?? self::SORT_OPTIONS['latest'];
         $query->orderBy($sortConfig['column'], $sortConfig['direction']);
-
-        // Pagination
         $perPage = min($request->input('per_page', 20), 100); // Max 100 per page
         $jobs = $query->paginate($perPage);
 
@@ -97,7 +88,6 @@ class JobController extends Controller
             ? $request->file('image')->store('images', 'public')
             : null;
 
-        // 住所情報がある場合はAddressを作成
         $addressId = null;
         if (!empty($validated['access'])) {
             $address = AddressService::createFromFullAddress($validated['access']);
