@@ -80,11 +80,26 @@ class JobController extends Controller
             });
         }
 
-
-        // デフォルトソート設定: 座標があれば距離順、なければ新着順
+        // ソートパラメータの解析
         $defaultSort = $request->filled(['latitude', 'longitude']) ? ['distance', 'latest'] : ['latest'];
-        $sortInput = $request->input('sort', $defaultSort);
-        $sortParams = is_array($sortInput) ? $sortInput : explode(',', $sortInput);
+        $sortParams = [];
+
+        if ($request->boolean('distance')) $sortParams[] = 'distance';
+        if ($request->boolean('calorie')) $sortParams[] = 'calorie';
+        if ($request->boolean('wage')) $sortParams[] = 'wage_desc';
+        if ($request->boolean('exercise')) $sortParams[] = 'exercise_desc';
+        if ($request->boolean('latest')) $sortParams[] = 'latest';
+
+        // sort配列パラメータが指定されている場合は、それを優先して使用
+        if ($request->filled('sort')) {
+            $inputSort = $request->input('sort');
+            $sortParams = is_array($inputSort) ? $inputSort : explode(',', $inputSort);
+        } 
+        // どちらも指定がなければデフォルト
+        elseif (empty($sortParams)) {
+            $sortParams = $defaultSort;
+        }
+
         $joinedMomenta = false;
         $joinedAddresses = false;
 
