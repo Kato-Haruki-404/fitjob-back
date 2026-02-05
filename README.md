@@ -18,3 +18,21 @@ docker compose up -d
 
 # 4. マイグレーション実行
 docker compose exec api php artisan migrate
+```
+
+<hr>
+
+## シードデータの挿入 
+
+```bash
+# シードデータの挿入
+docker compose exec api php artisan db:seed
+
+#　※エラーが起きた場合の対処方法
+# 1. 再度マイグレーション
+docker compose exec api php artisan migrate:fresh
+
+# 2. コンテナの再起動
+docker compose down
+docker compose build
+docker compose up -d
