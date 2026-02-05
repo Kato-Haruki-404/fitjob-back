@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\SystemController;
+
 
 Route::prefix('auth')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
@@ -16,10 +18,14 @@ Route::prefix('jobs')->group(function () {
 });
 
 
+
+
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('auth')->group(function () {
         Route::post('logout', [AuthController::class, 'logout']);
     });
+    Route::post('/system/seed', [SystemController::class, 'seed']);
     Route::prefix('admin')->group(function () {
         Route::prefix('jobs')->group(function () {
             Route::get('/', [AdminController::class, 'getPendingJobs']);
