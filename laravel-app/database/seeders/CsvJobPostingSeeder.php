@@ -172,6 +172,67 @@ class CsvJobPostingSeeder extends Seeder
     }
 
     /**
+     * 市区町村から推定される最寄り駅（簡易マッピング）
+     */
+    private function determineStation(string $city, string $town): array
+    {
+        // マッピング定義 (エリア -> [路線, 駅])
+        // これは完全ではなく、シードデータの雰囲気を出すためのものです
+        $mapping = [
+            '新宿' => ['JR山手線', '新宿駅'],
+            '渋' => ['JR山手線', '渋谷駅'],
+            '港' => ['東京メトロ日比谷線', '六本木駅'],
+            '千代田' => ['JR山手線', '東京駅'],
+            '中央' => ['東京メトロ銀座線', '銀座駅'],
+            '豊島' => ['JR山手線', '池袋駅'],
+            '品川' => ['JR山手線', '大崎駅'],
+            '大田' => ['JR京浜東北線', '蒲田駅'],
+            '世田谷' => ['東急田園都市線', '三軒茶屋駅'],
+            '江東' => ['ゆりかもめ', '有明駅'],
+            '墨田' => ['JR総武線', '錦糸町駅'],
+            '台東' => ['JR山手線', '上野駅'],
+            '立川' => ['JR中央線', '立川駅'],
+            '八王子' => ['JR中央線', '八王子駅'],
+            '武蔵野' => ['JR中央線', '吉祥寺駅'],
+            '三鷹' => ['JR中央線', '三鷹駅'],
+            '府中' => ['京王線', '府中駅'],
+            '調布' => ['京王線', '調布駅'],
+            '町田' => ['小田急線', '町田駅'],
+            '横浜' => ['JR根岸線', '横浜駅'],
+            '川崎' => ['JR京浜東北線', '川崎駅'],
+            '千葉' => ['JR総武線', '千葉駅'],
+            '船橋' => ['JR総武線', '船橋駅'],
+            'さいたま' => ['JR京浜東北線', '大宮駅'],
+        ];
+
+        foreach ($mapping as $key => $info) {
+            if (mb_strpos($city, $key) !== false || mb_strpos($town, $key) !== false) {
+                return [
+                    'line_name' => $info[0],
+                    'station_name' => $info[1]
+                ];
+            }
+        }
+
+        // マッチしない場合はランダムまたはデフォルト
+        $defaults = [
+            ['JR山手線', '新宿駅'],
+            ['JR山手線', '渋谷駅'],
+            ['JR山手線', '池袋駅'], 
+            ['JR山手線', '東京駅'],
+            ['JR山手線', '品川駅'],
+            ['JR中央線', '立川駅'],
+            ['JR中央線', '吉祥寺駅'],
+        ];
+        
+        $random = $defaults[array_rand($defaults)];
+        return [
+            'line_name' => $random[0],
+            'station_name' => $random[1]
+        ];
+    }
+
+    /**
      * 求人データを作成
      */
     private function createJobPosting(array $data): void
@@ -189,6 +250,9 @@ class CsvJobPostingSeeder extends Seeder
         $lat = 35.6895 + (mt_rand(-100, 100) * 0.001);
         $lng = 139.6917 + (mt_rand(-100, 100) * 0.001);
 
+        // 路線・駅を住所（市区町村）に基づいて決定
+        $stationInfo = $this->determineStation($parsedAddress['city'], $parsedAddress['town']);
+
         $address = Address::create([
             'postal_code' => null,
             'prefecture' => $parsedAddress['prefecture'],
@@ -198,8 +262,8 @@ class CsvJobPostingSeeder extends Seeder
             'building_name' => $parsedAddress['building_name'],
             'latitude' => $lat,
             'longitude' => $lng,
-            'line_name' => 'JR山手線', // ダミー
-            'nearest_station' => '新宿駅', // ダミー（本来は最寄り駅判定が必要）
+            'line_name' => $stationInfo['line_name'],
+            'nearest_station' => $stationInfo['station_name'],
             'walking_minutes' => $data['walking_minutes'],
         ]);
 
