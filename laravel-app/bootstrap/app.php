@@ -15,7 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->statefulApi();
+        // $middleware->statefulApi();
         // APIルート全体にCamelCaseResponseを適用
         $middleware->api(append: [
             CamelCaseResponse::class,
