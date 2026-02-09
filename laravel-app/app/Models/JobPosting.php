@@ -33,7 +33,7 @@ class JobPosting extends Model
     protected function image(): Attribute
     {
         return Attribute::make(
-            get: fn (?string $value) => $value ? url('storage/' . $value) : null,
+            get: fn (?string $value) => $value ? \Illuminate\Support\Facades\Storage::url($value) : null,
         );
     }
 

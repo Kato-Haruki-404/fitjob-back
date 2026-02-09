@@ -61,7 +61,15 @@ class JobPostingSeeder extends Seeder
         // ランダム生成用データプール
         $titles = ['荷物運搬スタッフ', '倉庫内軽作業', 'イベント設営スタッフ', '引っ越しアシスタント', 'ポスティング', 'デリバリー配送', '清掃スタッフ', 'ジムインストラクター補助', '建築現場・資材搬入', '警備員（巡回）'];
         $companies = ['アマゾンジャパン合同会社', '株式会社ABC物流', 'イベントプロデュース株式会社', '引越しのサカイ', 'Uber Eats Japan', '株式会社クリーンサービス', 'スポーツクラブFit', '建設サポート株式会社', 'セキュリティーガード株式会社'];
-        $images = ['images/demoImage.jpg'];
+        $images = [
+            'demoImages/demo1.png',
+            'demoImages/demo2.png',
+            'demoImages/demo3.png',
+            'demoImages/demo4.png',
+            'demoImages/demo5.png',
+            'demoImages/demo6.png',
+            'demoImages/demo7.png',
+        ];
 
         // 20件の求人を作成
         for ($i = 0; $i < 20; $i++) {

@@ -163,12 +163,12 @@ class CsvJobPostingSeeder extends Seeder
         foreach ($map as $image => $keywords) {
             foreach ($keywords as $keyword) {
                 if (mb_strpos($title, $keyword) !== false) {
-                    return 'images/demo' . (mt_rand(1, 6) . '.png');
+                    return 'demoImages/demo' . mt_rand(1, 7) . '.png';
                 }
             }
         }
 
-        return 'images/demo' . (mt_rand(1, 6) . '.png');
+        return 'demoImages/demo' . mt_rand(1, 7) . '.png';
     }
 
     /**

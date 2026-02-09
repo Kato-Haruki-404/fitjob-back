@@ -134,10 +134,7 @@ class JobController extends Controller
             }
         }
 
-        // job_postingsテーブルのカラムを選択（既にselectRawなどで指定されていない場合）
-        if (!$joinedAddresses && !$joinedMomenta) {
-            // 特にJOINしていない場合はそのまま
-        } elseif ($joinedMomenta && !$joinedAddresses) {
+        if ($joinedMomenta && !$joinedAddresses) {
             $query->select('job_postings.*');
         }
         $perPage = min($request->input('per_page', 20), 100); // Max 100 per page
@@ -151,7 +148,7 @@ class JobController extends Controller
         $validated = $request->validated();
 
         $imagePath = $request->hasFile('image')
-            ? $request->file('image')->store('images', 'public')
+            ? $request->file('image')->store('images')
             : null;
 
         $addressId = null;
