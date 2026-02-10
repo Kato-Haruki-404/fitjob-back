@@ -6,8 +6,8 @@ COPY --from=composer:2.8 /usr/bin/composer /usr/bin/composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
 RUN apt-get update \
-    && apt-get install -y zip unzip git \
-    && docker-php-ext-install pdo_mysql
+    && apt-get install -y zip unzip git libpq-dev \
+    && docker-php-ext-install pdo_mysql pdo_pgsql
 
 COPY . .
 
